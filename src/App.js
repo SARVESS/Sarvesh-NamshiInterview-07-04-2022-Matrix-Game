@@ -1,22 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState } from "react";
 
 function App() {
+  const initialBoxes = [...Array(16).keys()].map((i) => {
+    return { boxId: i, selected: 0 };
+  });
+  const [boxes, setBoxes] = useState(initialBoxes);
+
+  const setSelectedBox = (id) => {
+    const newBoxes = boxes.map((box) => {
+      return {
+        ...box,
+        selected: box.boxId === id ? 2 : box.selected === 2 ? 1 : 0,
+      };
+    });
+    setBoxes(newBoxes);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <div className="container">
+          {boxes.map((box) => (
+            <div
+              className={`box ${box.selected > 0 ? "selected" : ""}`}
+              onClick={() => {
+                setSelectedBox(box.boxId);
+              }}
+            >
+              {box.boxId + 1}
+            </div>
+          ))}
+        </div>
       </header>
     </div>
   );
